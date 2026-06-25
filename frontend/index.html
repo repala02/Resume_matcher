@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Matcher</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Resume Matcher</h1>
+      <p>Paste your resume and job description to see your match score instantly</p>
+    </div>
+
+    <div class="panes">
+      <div class="pane">
+        <label>Your Resume</label>
+        <textarea id="resume" placeholder="Paste your resume text here..."></textarea>
+      </div>
+      <div class="pane">
+        <label>Job Description</label>
+        <textarea id="jd" placeholder="Paste the job description here..."></textarea>
+      </div>
+    </div>
+
+    <button id="analyzeBtn" onclick="analyze()">Analyze Match</button>
+
+    <div id="loading" style="display:none">
+      <p>Analyzing your match, please wait...</p>
+    </div>
+
+    <div id="results" style="display:none">
+      <div class="score-box">
+        <div class="score" id="scoreNum">0%</div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+      <p id="summary"></p>
+      <div class="categories" id="categories"></div>
+      <div class="skills-row">
+        <div class="skill-box">
+          <h3>Matched Skills</h3>
+          <div id="matchedSkills"></div>
+        </div>
+        <div class="skill-box">
+          <h3>Missing Skills</h3>
+          <div id="missingSkills"></div>
+        </div>
+      </div>
+      <div class="tip" id="tip"></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
