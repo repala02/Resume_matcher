@@ -7,49 +7,117 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="header">
+
+  <!-- AUTH PAGE -->
+  <div id="authPage" class="auth-page">
+    <div class="auth-box">
       <h1>Resume Matcher</h1>
-      <p>Paste your resume and job description to see your match score instantly</p>
-    </div>
+      <p class="auth-sub">AI-powered resume & job description analyzer</p>
 
-    <div class="panes">
-      <div class="pane">
-        <label>Your Resume</label>
-        <textarea id="resume" placeholder="Paste your resume text here..."></textarea>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+        <button class="auth-tab" onclick="switchTab('register')">Register</button>
       </div>
-      <div class="pane">
-        <label>Job Description</label>
-        <textarea id="jd" placeholder="Paste the job description here..."></textarea>
-      </div>
-    </div>
 
-    <button id="analyzeBtn" onclick="analyze()">Analyze Match</button>
+      <div id="authError" class="auth-error" style="display:none"></div>
+      <div id="authSuccess" class="auth-success" style="display:none"></div>
 
-    <div id="loading" style="display:none">
-      <p>Analyzing your match, please wait...</p>
-    </div>
+      <div id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email address">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button class="auth-btn" onclick="login()">Login</button>
+      </div>
 
-    <div id="results" style="display:none">
-      <div class="score-box">
-        <div class="score" id="scoreNum">0%</div>
-        <div class="verdict" id="verdict"></div>
+      <div id="registerForm" style="display:none">
+        <input type="email" id="regEmail" placeholder="Email address">
+        <input type="password" id="regPassword" placeholder="Password (min 6 characters)">
+        <button class="auth-btn" onclick="register()">Create Account</button>
       </div>
-      <p id="summary"></p>
-      <div class="categories" id="categories"></div>
-      <div class="skills-row">
-        <div class="skill-box">
-          <h3>Matched Skills</h3>
-          <div id="matchedSkills"></div>
-        </div>
-        <div class="skill-box">
-          <h3>Missing Skills</h3>
-          <div id="missingSkills"></div>
-        </div>
-      </div>
-      <div class="tip" id="tip"></div>
     </div>
   </div>
+
+  <!-- MAIN APP -->
+  <div id="mainApp" style="display:none">
+    <div class="container">
+
+      <div class="header">
+        <div>
+          <h1>Resume Matcher</h1>
+          <p>Paste your resume and job description to see your match score instantly</p>
+        </div>
+        <div class="user-info">
+          <span class="user-email" id="userEmail"></span>
+          <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+      </div>
+
+      <div class="panes">
+        <div class="pane">
+          <label>Your Resume</label>
+
+          <div class="upload-area" id="uploadArea">
+            <input type="file" id="resumeFile" accept=".pdf,.docx" onchange="handleFileUpload()" hidden>
+            <button class="upload-btn" id="uploadBtn" onclick="document.getElementById('resumeFile').click()">
+              📎 Upload PDF or Word file
+            </button>
+            <button class="clear-btn" id="clearResumeBtn" onclick="clearResume()" style="display:none">
+              🗑️ Clear resume
+            </button>
+            <span class="upload-status" id="uploadStatus"></span>
+          </div>
+
+          <div class="upload-divider">— or paste text below —</div>
+
+          <textarea id="resume" placeholder="Paste your resume text here..." oninput="onResumeType()"></textarea>       
+         </div> 
+         <div class="pane">
+        <label>Job Description
+          <button class="inline-clear-btn" onclick="clearJD()">🗑️ Clear</button>
+        </label>
+        <textarea id="jd" placeholder="Paste the job description here..."></textarea>
+      </div>
+      </div>
+
+      <button id="analyzeBtn" onclick="event.preventDefault(); analyze();">Analyze Match</button>
+      <div id="loading" style="display:none">
+        <p>Analyzing your match, please wait...</p>
+      </div>
+
+      <div id="results" style="display:none">
+        <div class="score-box">
+          <div class="score" id="scoreNum">0%</div>
+          <div class="verdict" id="verdict"></div>
+        </div>
+        <p id="summary"></p>
+        <div class="categories" id="categories"></div>
+        <div class="skills-row">
+          <div class="skill-box">
+            <h3>✅ Matched Skills</h3>
+            <div id="matchedSkills"></div>
+          </div>
+          <div class="skill-box">
+            <h3>❌ Missing Skills</h3>
+            <div id="missingSkills"></div>
+          </div>
+        </div>
+        <div class="tip" id="tip"></div>
+
+      </div>
+
+      <!-- HISTORY SECTION -->
+      <div class="history-section">
+        <div class="history-header">
+          <h2>📋 Past Analyses</h2>
+          <button class="refresh-btn" onclick="loadHistory()">Refresh</button>
+        </div>
+        <div id="historyList">
+          <p class="no-history">No analyses yet. Analyze a resume to see history here!</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
